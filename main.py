@@ -61,7 +61,7 @@ for y in range(len(nfa.pathSet)):
 
     aux = nfa.stateMachine[dfa.stateSet[0]][nfa.pathSet[y]]
     aux = list(dict.fromkeys(aux))          #stergem duplicatele
-    aux.sort()                              #sortam pentru a nu avea probleme de genul ab != ba
+    aux.sort()                              #sortam pentru a nu avea probleme de tipul ab != ba
     s = "".join(aux)                        #facem un singur string cu elementele din lista
 
     s = "".join(aux)                        #facem un singur string cu elementele din lista continuta in nfa.stateMachine-ul startState si pathSet-ul respectiv
@@ -81,7 +81,7 @@ while len(newStates) != 0:
                 aux += nfa.stateMachine[newStates[0][j]][nfa.pathSet[i]]
 
             aux = list(dict.fromkeys(aux))          #stergem duplicatele
-            aux.sort()                              #sortam pentru a nu avea probleme de genul ab != ba
+            aux.sort()                              #sortam pentru a nu avea probleme de tipul ab != ba
             s = "".join(aux)                        #facem un singur string cu elementele din lista
 
 
