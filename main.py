@@ -18,7 +18,7 @@ nfa = NFA()
 dfa = DFA()
 
 
-reader = open("input.txt", "r")
+reader = open("input2.txt", "r")
 
 nfa.stateMachine = {}                                 
 nfa.noStates = int(reader.readline())
@@ -48,7 +48,8 @@ for i, j, k in inputtedTransitions:
 nfa.startState = reader.readline().strip()
 nfa.endingStatesNo = int(reader.readline().strip())
 nfa.endingStates = reader.readline().strip().split()
-              
+
+reader.close()
     
 newStates = []
 dfa.stateMachine = {}
@@ -95,8 +96,8 @@ print("\nDFA:")
 print(dfa.stateMachine)
 
 
-dfa.stateSet = list(dfa.stateMachine.keys())
-dfa.endingStates = []
+dfa.noStates = len(nfa.stateSet)
+dfa.pathSet = nfa.pathSet.copy()
 
 for x in dfa.stateSet:
     for i in x:
@@ -105,5 +106,6 @@ for x in dfa.stateSet:
             break
         
 dfa.startState = nfa.startState
+dfa.endingStatesNo = len(dfa.endingStates)
 
 print("\nStarile finale ale DFA-ului : ",dfa.endingStates)      
