@@ -18,7 +18,7 @@ nfa = NFA()
 dfa = DFA()
 
 
-reader = open("input2.txt", "r")
+reader = open("input.txt", "r")
 
 nfa.stateMachine = {}                                 
 nfa.noStates = int(reader.readline())
