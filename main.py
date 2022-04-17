@@ -1,4 +1,3 @@
-import pandas as pd
 
 class Automat:
     noStates = 0
@@ -19,12 +18,10 @@ nfa = NFA()
 dfa = DFA()
 
 
-# Taking NFA input from User 
-
 reader = open("input.txt", "r")
 
 nfa.stateMachine = {}                                 
-nfa.noStates = int(reader.readline())                   #Enter total no. of states
+nfa.noStates = int(reader.readline())
 nfa.stateSet = []
 for i in reader.readline().strip().split():
     nfa.stateMachine[i] = {}
@@ -51,54 +48,46 @@ for i, j, k in inputtedTransitions:
 nfa.startState = reader.readline().strip()
 nfa.endingStatesNo = int(reader.readline().strip())
 nfa.endingStates = reader.readline().strip().split()
-
-
-###################################################                 
+              
     
-newStates = []                          #holds all the new states created in dfa
-dfa.stateMachine = {}                                      #dfa dictionary/table or the output structure we needed
-dfa.stateSet = list(nfa.startState)                  #conatins all the states in nfa.stateMachine plus the states created in dfa are also appended further
+newStates = []
+dfa.stateMachine = {}
+dfa.stateSet = list(nfa.startState)
 
-###################################################
 
-# Computing first row of DFA transition table
-
-dfa.stateMachine[dfa.stateSet[0]] = {}                        #creating a nested dictionary in dfa 
+dfa.stateMachine[dfa.stateSet[0]] = {}
 for y in range(len(nfa.pathSet)):
 
-    temp = nfa.stateMachine[dfa.stateSet[0]][nfa.pathSet[y]]
-    temp = list(dict.fromkeys(temp))        #stergem duplicatele
-    temp.sort()                             #sortam pentru a nu avea probleme de genul ab != ba
-    s = "".join(temp)                       #facem un singur string cu elementele din lista
+    aux = nfa.stateMachine[dfa.stateSet[0]][nfa.pathSet[y]]
+    aux = list(dict.fromkeys(aux))          #stergem duplicatele
+    aux.sort()                              #sortam pentru a nu avea probleme de genul ab != ba
+    s = "".join(aux)                        #facem un singur string cu elementele din lista
 
-    var = "".join(temp)   #facem un singur string cu elementele din lista continuta in nfa.stateMachine-ul startState si pathSet-ul respectiv
-    dfa.stateMachine[dfa.stateSet[0]][nfa.pathSet[y]] = var            #assigning the state in DFA table
-    if var not in dfa.stateSet and var != '':                         #if the state is newly created 
-        newStates.append(var)                  #then append it to the new_states_list
-        dfa.stateSet.append(var)                        #as well as to the keys_list which contains all the states
+    s = "".join(aux)                        #facem un singur string cu elementele din lista continuta in nfa.stateMachine-ul startState si pathSet-ul respectiv
+    dfa.stateMachine[dfa.stateSet[0]][nfa.pathSet[y]] = s
+    if s not in dfa.stateSet and s != '':
+        newStates.append(s)
+        dfa.stateSet.append(s)
         
-###################################################
- 
-# Computing the other rows of DFA transition table
 
-while len(newStates) != 0:                     #consition is true only if the new_states_list is not empty
-    dfa.stateMachine[newStates[0]] = {}                     #taking the first element of the new_states_list and examining it
+while len(newStates) != 0:
+    dfa.stateMachine[newStates[0]] = {}
 
-    for _ in range(len(newStates[0])):
+    for o in range(len(newStates[0])):
         for i in range(len(nfa.pathSet)):
-            temp = []                                #creating a temporay list
+            aux = []
             for j in range(len(newStates[0])):
-                temp += nfa.stateMachine[newStates[0][j]][nfa.pathSet[i]]  #taking the union of the states
+                aux += nfa.stateMachine[newStates[0][j]][nfa.pathSet[i]]
 
-            temp = list(dict.fromkeys(temp))        #stergem duplicatele
-            temp.sort()                             #sortam pentru a nu avea probleme de genul ab != ba
-            s = "".join(temp)                       #facem un singur string cu elementele din lista
+            aux = list(dict.fromkeys(aux))          #stergem duplicatele
+            aux.sort()                              #sortam pentru a nu avea probleme de genul ab != ba
+            s = "".join(aux)                        #facem un singur string cu elementele din lista
 
 
-            if s not in dfa.stateSet and s!= '':                   #if the state is newly created
-                newStates.append(s)            #then append it to the new_states_list
-                dfa.stateSet.append(s)                  #as well as to the keys_list which contains all the states
-            dfa.stateMachine[newStates[0]][nfa.pathSet[i]] = s   #assigning the new state in the DFA table
+            if s not in dfa.stateSet and s!= '':
+                newStates.append(s)
+                dfa.stateSet.append(s)
+            dfa.stateMachine[newStates[0]][nfa.pathSet[i]] = s
         
     newStates.remove(newStates[0])
 
