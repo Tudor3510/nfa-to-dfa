@@ -53,13 +53,6 @@ nfa.endingStatesNo = int(reader.readline().strip())
 nfa.endingStates = reader.readline().strip().split()
 
 
-print("\nnfa.stateMachine :- \n")
-print(nfa.stateMachine)                                    #Printing nfa.stateMachine
-print("\nPrinting nfa.stateMachine table :- ")
-nfa.stateMachine_table = pd.DataFrame(nfa.stateMachine)
-print(nfa.stateMachine_table.transpose())
-
-
 ###################################################                 
     
 newStates = []                          #holds all the new states created in dfa
@@ -107,10 +100,10 @@ while len(newStates) != 0:                     #consition is true only if the ne
                 dfa.stateSet.append(s)                  #as well as to the keys_list which contains all the states
             dfa.stateMachine[newStates[0]][nfa.pathSet[i]] = s   #assigning the new state in the DFA table
         
-    newStates.remove(newStates[0])       #Removing the first element in the new_states_list
+    newStates.remove(newStates[0])
 
-print("\nDFA :- \n")    
-print(dfa.stateMachine)                                           #Printing the DFA created
+print("\nDFA:")
+print(dfa.stateMachine)
 
 
 dfa.stateSet = list(dfa.stateMachine.keys())
@@ -124,62 +117,4 @@ for x in dfa.stateSet:
         
 dfa.startState = nfa.startState
 
-print("\nFinal states of the DFA are : ",dfa.endingStates)       #Printing Final states of DFA
-
- 
-
-"""
-# Code Ouput Example
-No. of states : 4
-No. of transitions : 2
-state name : A
-path : a
-Enter end state from state A travelling through path a : 
-A B
-path : b
-Enter end state from state A travelling through path b : 
-A
-state name : B
-path : a
-Enter end state from state B travelling through path a : 
-C
-path : b
-Enter end state from state B travelling through path b : 
-C
-state name : C
-path : a
-Enter end state from state C travelling through path a : 
-D
-path : b
-Enter end state from state C travelling through path b : 
-D
-state name : D
-path : a
-Enter end state from state D travelling through path a : 
-path : b
-Enter end state from state D travelling through path b : 
-nfa.stateMachine :- 
-{'A': {'a': ['A', 'B'], 'b': ['A']}, 'B': {'a': ['C'], 'b': ['C']}, 'C': {'a': ['D'], 'b': ['D']}, 'D': {'a': [], 'b': []}}
-Printing nfa.stateMachine table :- 
-        a    b
-A  [A, B]  [A]
-B     [C]  [C]
-C     [D]  [D]
-D      []   []
-Enter final state of nfa.stateMachine : 
-D
-DFA :- 
-{'A': {'a': 'AB', 'b': 'A'}, 'AB': {'a': 'ABC', 'b': 'AC'}, 'ABC': {'a': 'ABCD', 'b': 'ACD'}, 'AC': {'a': 'ABD', 'b': 'AD'}, 'ABCD': {'a': 'ABCD', 'b': 'ACD'}, 'ACD': {'a': 'ABD', 'b': 'AD'}, 'ABD': {'a': 'ABC', 'b': 'AC'}, 'AD': {'a': 'AB', 'b': 'A'}}
-Printing DFA table :- 
-         a    b
-A       AB    A
-AB     ABC   AC
-ABC   ABCD  ACD
-AC     ABD   AD
-ABCD  ABCD  ACD
-ACD    ABD   AD
-ABD    ABC   AC
-AD      AB    A
-Final states of the DFA are :  ['ABCD', 'ACD', 'ABD', 'AD']
-"""
-#code to convert nfa.stateMachine to dfa 
+print("\nStarile finale ale DFA-ului : ",dfa.endingStates)      
