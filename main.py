@@ -24,7 +24,7 @@ dfa = DFA()
 reader = open("input.txt", "r")
 
 nfa.stateMachine = {}                                 
-nfa.stateMachine.noStates = int(reader.readline())                   #Enter total no. of states
+nfa.noStates = int(reader.readline())                   #Enter total no. of states
 nfa.stateSet = []
 for i in reader.readline().strip().split():
     nfa.stateMachine[i] = {}
@@ -72,7 +72,13 @@ dfa.stateSet = list(nfa.startState)                  #conatins all the states in
 
 dfa.stateMachine[dfa.stateSet[0]] = {}                        #creating a nested dictionary in dfa 
 for y in range(len(nfa.pathSet)):
-    var = "".join(nfa.stateMachine[dfa.stateSet[0]][nfa.pathSet[y]])   #facem un singur string cu elementele din lista continuta in nfa.stateMachine-ul startState si pathSet-ul respectiv
+
+    temp = nfa.stateMachine[dfa.stateSet[0]][nfa.pathSet[y]]
+    temp = list(dict.fromkeys(temp))        #stergem duplicatele
+    temp.sort()                             #sortam pentru a nu avea probleme de genul ab != ba
+    s = "".join(temp)                       #facem un singur string cu elementele din lista
+
+    var = "".join(temp)   #facem un singur string cu elementele din lista continuta in nfa.stateMachine-ul startState si pathSet-ul respectiv
     dfa.stateMachine[dfa.stateSet[0]][nfa.pathSet[y]] = var            #assigning the state in DFA table
     if var not in dfa.stateSet and var != '':                         #if the state is newly created 
         newStates.append(var)                  #then append it to the new_states_list
@@ -105,19 +111,20 @@ while len(newStates) != 0:                     #consition is true only if the ne
 
 print("\nDFA :- \n")    
 print(dfa.stateMachine)                                           #Printing the DFA created
-print("\nPrinting DFA table :- ")
-dfa_table = pd.DataFrame(dfa.stateMachine)
-print(dfa_table.transpose())
 
-dfa_states_list = list(dfa.stateMachine.keys())
-dfa_final_states = []
-for x in dfa_states_list:
+
+dfa.stateSet = list(dfa.stateMachine.keys())
+dfa.endingStates = []
+
+for x in dfa.stateSet:
     for i in x:
         if i in nfa.endingStates:
-            dfa_final_states.append(x)
+            dfa.endingStates.append(x)
             break
         
-print("\nFinal states of the DFA are : ",dfa_final_states)       #Printing Final states of DFA
+dfa.startState = nfa.startState
+
+print("\nFinal states of the DFA are : ",dfa.endingStates)       #Printing Final states of DFA
 
  
 
